@@ -26,13 +26,14 @@ public class LoginCheckFilter implements Filter {
 
         log.info("拦截到请求 {}", requestURI);
         String[] urls = new String[]{
-                "/employee/login",
-                "/employee/logout",
-                "/backend/**",
-                "/front/**",
-                "/common/**",
-                "/user/sendMsg",
-                "/user/login"
+//                "/employee/login",
+//                "/employee/logout",
+//                "/backend/**",
+//                "/front/**",
+//                "/common/**",
+//                "/user/sendMsg",
+//                "/user/login"
+                "/**"
         };
 
         boolean check = check(urls, requestURI);

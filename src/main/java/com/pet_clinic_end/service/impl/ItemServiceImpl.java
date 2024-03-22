@@ -18,4 +18,8 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements ItemService {
 
+    @Override
+    public void add(Item item) {
+        this.save(item);
+    }
 }
