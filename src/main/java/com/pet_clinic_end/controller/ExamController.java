@@ -134,7 +134,7 @@ public class ExamController {
     }
 
     /**
-     * 用户提交考卷答案
+     * 用户提交考卷答案，同时进行判分
      * @param userExamList
      * @return
      */
