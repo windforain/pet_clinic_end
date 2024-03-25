@@ -119,11 +119,13 @@ public class ExamController {
         return Result.success(-2);
     }
 
+
     /**
      * 给考生打分
      * @param examAuthority
      * @return
      */
+    /*
     @PostMapping("/grade")
     public Result<String> grade(@RequestBody ExamAuthority examAuthority) {
         LambdaQueryWrapper<ExamAuthority> queryWrapper = new LambdaQueryWrapper<>();
@@ -132,6 +134,7 @@ public class ExamController {
         examAuthorityService.update(examAuthority, queryWrapper);
         return Result.success("打分成功");
     }
+    */
 
     /**
      * 用户提交考卷答案，同时进行判分
