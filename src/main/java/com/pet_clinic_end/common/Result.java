@@ -20,6 +20,8 @@ public class Result<T> {
         Result<T> r = new Result<T>();
         r.data = object;
         r.code = 1;
+        // no use, for interface standard
+        r.msg = "";
         return r;
     }
 
@@ -27,6 +29,8 @@ public class Result<T> {
         Result r = new Result();
         r.msg = msg;
         r.code = 0;
+        // no use, for interface standard
+        r.data = "";
         return r;
     }
 

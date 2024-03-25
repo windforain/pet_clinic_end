@@ -39,12 +39,12 @@ public class LoginCheckFilter implements Filter {
         boolean check = check(urls, requestURI);
 
         if (check){
-            log.info("本次请求{}不需要处理", requestURI);
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-        if(request.getSession().getAttribute("employee") != null) {
+//            log.info("本次请求{}不需要处理", requestURI);
+//            filterChain.doFilter(request, response);
+//            return;
+//        }
+//
+//        if(request.getSession().getAttribute("employee") != null) {
             log.info("用户已登录, 用户id为: {}", request.getSession().getAttribute("employee"));
             Long empId = (Long) request.getSession().getAttribute("employee");
             BaseContext.setCurrentId(empId);
