@@ -11,6 +11,9 @@
     <insert id="addCase" useGeneratedKeys="true" keyProperty="id" keyColumn="id" parameterType="com.pet_clinic_end.entity.Case">
         INSERT INTO `case` SET type_id=#{typeId}, case_name=#{caseName},create_time=#{createTime}, create_user=#{createUser}
     </insert>
+    <select id="getCaseById" resultType="com.pet_clinic_end.entity.Case">
+        SELECT * FROM `case` WHERE id=#{caseId}
+    </select>
     <insert id="addCaseItem">
         INSERT INTO `item_case` SET item_id=#{itemId}, case_id=#{caseId},create_time=#{createTime}, create_user=#{createUser}
     </insert>
@@ -21,6 +24,9 @@
         INSERT INTO `case_detail` SET case_id=#{caseId}, data_col=#{dataCol}, data_row=#{dataRow},
                                       data=#{data}, create_time=#{createTime}, create_user=#{createUser}
     </insert>
+    <update id="updateCaseDetail">
+        UPDATE `case_detail` SET data=#{data}, update_time=#{updateTime}, update_user=#{updateUser} WHERE case_id=#{caseId} AND data_col=#{dataCol} AND data_row=#{dataRow}
+    </update>
     <select id="getCaseDetailByCaseId" resultType="com.pet_clinic_end.entity.CaseDetail">
         SELECT case_name, GROUP_CONCAT(case_detail.`data` SEPARATOR ',') AS detail
         FROM `case`, case_detail

@@ -44,22 +44,22 @@ public class CaseController {
 
         Integer result = caseService.addCase(c);
         if (result!=1) {
-            return Result.error("插入病例失败");
+            return Result.error("添加病例失败");
         }
         Integer cid = c.getId();
         for (Integer iid : c.getItemId()) {
             result = caseService.addCaseItem(cid, iid, date, createUser);
             if (result!=1) {
-                return Result.error("插入病例-化验项目关系失败");
+                return Result.error("添加病例-化验项目关系失败");
             }
         }
         for (Integer mid : c.getMedicineId()) {
             result = caseService.addCaseMedicine(cid, mid, date, createUser);
             if (result!=1) {
-                return Result.error("插入病例-药品关系失败");
+                return Result.error("添加病例-药品关系失败");
             }
         }
-        return Result.success("插入病例成功");
+        return Result.success("添加病例成功");
     }
 
     @PostMapping("/update")
@@ -81,18 +81,22 @@ public class CaseController {
         // TODO
         String createUser = null;
 
-        Integer result = caseService.addCaseDetail(caseId,dataCol,0,cd.getText(),date,createUser);
+        Case existCase = caseService.getCaseById(caseId);
+        if (existCase==null) {
+            return Result.error("当前病例不存在，无法添加病例信息");
+        }
+        Integer result = caseService.updateCaseDetail(caseId,dataCol,0,cd.getText(),date,createUser);
         if (result!=1) {
             return Result.error("添加病例文字信息失败");
         }
         for (String pic: cd.getPicture()) {
-            result = caseService.addCaseDetail(caseId,dataCol,1,pic,date,createUser );
+            result = caseService.updateCaseDetail(caseId,dataCol,1,pic,date,createUser );
             if (result!=1) {
                 return Result.error("添加病例图片信息失败");
             }
         }
         for (String vid: cd.getVideo()) {
-            result = caseService.addCaseDetail(caseId,dataCol,2,vid,date,createUser);
+            result = caseService.updateCaseDetail(caseId,dataCol,2,vid,date,createUser);
             if (result!=1) {
                 return Result.error("添加病例视频信息失败");
             }
