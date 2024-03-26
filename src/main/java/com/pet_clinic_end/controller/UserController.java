@@ -1,12 +1,9 @@
 package com.pet_clinic_end.controller;
 
-
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.api.R;
 import com.pet_clinic_end.common.Result;
 import com.pet_clinic_end.common.SendMailUtil;
-import com.pet_clinic_end.entity.Item;
 import com.pet_clinic_end.entity.User;
-import com.pet_clinic_end.service.ItemService;
 import com.pet_clinic_end.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +12,14 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.Session;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @CrossOrigin
@@ -96,6 +98,7 @@ public class UserController {
                 // 删除验证码，保证验证码使用一次
                 redisTemplate.delete(email);
                 // 往数据库添加用户（普通）
+                //
                 userService.addCommonUser(email, user.getName(), user.getPassword());
                 return Result.success("注册成功");
             }else {
@@ -105,23 +108,30 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public Result<User> login(@RequestBody User user)
+    @ResponseBody
+    public Result<Object> login(@RequestBody User user, HttpSession httpSession)
     {
 //        {
 //            "email": "string",
 //            "password": "string"
 //        }
-        User selectUser = userService.getUserByEmail(user.getEmail());
+        String email = user.getEmail();
+        User selectUser = userService.getUserByEmail(email);
         String pwd = selectUser.getPassword();
-        if (pwd.equals(user.getPassword())) {
-            return Result.success(selectUser);
+        if (!pwd.equals(user.getPassword())) {
+            return Result.error("用户名或密码错误");
         }
-        return Result.error("用户名或密码错误");
+        httpSession.setAttribute("email", email);
+        String session = UUID.randomUUID().toString();
+        Map<String, Object> data = new HashMap<>();
+        data.put("id", selectUser.getId());
+        data.put("session", session);
+        return Result.success(data);
     }
 
 
     @GetMapping("/page")
-    public Result<Object> page(@RequestParam Integer page, @RequestParam Integer pageSize, @RequestParam String username) {
+    public Result<Object> page(@RequestParam Integer page, @RequestParam Integer pageSize, @RequestParam(required = false) String username) {
 //        {
 //            "page": 0,
 //            "pageSize": 10,
@@ -137,6 +147,34 @@ public class UserController {
         data.put("list", pageUser);
         data.put("total", total);
         return Result.success(data);
+    }
+
+    @PostMapping("/update")
+    public Result<String> update(@RequestBody User user) {
+//        {
+//            "id": 0,
+//                "name": "string",
+//                "password": "string",
+//                "image": "string",
+//                "email": "string"
+//        }
+        Integer result = userService.updateUserById(user);
+        if (result!=1) {
+            return Result.error("更新用户信息失败");
+        }
+        return Result.success("更新用户信息成功");
+    }
+
+    @PostMapping("/getUserInfo")
+    public Result<Object> getUserInfo(@RequestBody User user) {
+//        {
+//            "id": 0
+//        }
+        User selectUser = userService.getUserById(user);
+        if (selectUser==null) {
+            Result.error("没有查询到该用户");
+        }
+        return Result.success(selectUser);
     }
 
 }

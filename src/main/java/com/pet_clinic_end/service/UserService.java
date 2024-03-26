@@ -22,4 +22,11 @@ public class UserService {
     public List<User> getUserPage(Integer begin, Integer pageSize, String name){
         return userMapper.getUserPage(begin, pageSize, name);
     }
+
+    public Integer updateUserById(User user){
+        return userMapper.updateUserById(user);
+    }
+    public User getUserById(User user) {
+        return userMapper.getUserById(user);
+    }
 }
