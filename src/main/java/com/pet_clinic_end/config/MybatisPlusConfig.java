@@ -12,6 +12,6 @@ public class MybatisPlusConfig {
     {
         MybatisPlusInterceptor mybatisPlusInterceptor = new MybatisPlusInterceptor();
         mybatisPlusInterceptor.addInnerInterceptor(new PaginationInnerInterceptor());
-        return  mybatisPlusInterceptor;
+        return mybatisPlusInterceptor;
     }
 }
