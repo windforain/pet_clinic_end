@@ -189,7 +189,7 @@ public class UserController {
 //        }
         User selectUser = userService.getUserById(user);
         if (selectUser==null) {
-            Result.error("没有查询到该用户");
+            return Result.error("没有查询到该用户");
         }
         return Result.success(selectUser);
     }
