@@ -1,7 +1,7 @@
 package com.pet_clinic_end.controller;
 
 
-import com.pet_clinic_end.common.Idlist;
+import com.pet_clinic_end.common.IdList;
 import com.pet_clinic_end.common.Result;
 import com.pet_clinic_end.entity.Case;
 import com.pet_clinic_end.entity.CaseDetail;
@@ -125,7 +125,7 @@ public class CaseController {
     }
 
     @DeleteMapping("/delete")
-    public Result<String> delete(@RequestBody Idlist idList){
+    public Result<String> delete(@RequestBody IdList idList){
 //        {
 //            "case_id": [
 //            0
