@@ -98,7 +98,6 @@ public class UserController {
                 // 删除验证码，保证验证码使用一次
                 redisTemplate.delete(email);
                 // 往数据库添加用户（普通）
-                //
                 userService.addCommonUser(email, user.getName(), user.getPassword());
                 return Result.success("注册成功");
             }else {
@@ -109,23 +108,41 @@ public class UserController {
 
     @PostMapping("/login")
     @ResponseBody
-    public Result<Object> login(@RequestBody User user, HttpSession httpSession)
+    public Result<Object> login(@RequestBody User user, HttpServletRequest request)
     {
 //        {
 //            "email": "string",
 //            "password": "string"
 //        }
+        HttpSession httpSession = request.getSession();
         String email = user.getEmail();
         User selectUser = userService.getUserByEmail(email);
+        if (selectUser==null) {
+            return Result.error("该邮箱账号不存在");
+        }
+
+        if (!httpSession.isNew()) {
+            // 当前sessionId和请求登录的账号不匹配，当前sessionId失效
+            if (httpSession.getAttribute("username")!=selectUser.getName() || httpSession.getAttribute("email")!=email)
+            {
+                httpSession.invalidate();
+            }
+            // 匹配，登录成功
+            return Result.success("用户已经登录");
+        }
+
+        // 首次登录或登录新账号
         String pwd = selectUser.getPassword();
         if (!pwd.equals(user.getPassword())) {
             return Result.error("用户名或密码错误");
         }
         httpSession.setAttribute("email", email);
-        String session = UUID.randomUUID().toString();
+        httpSession.setAttribute("username", selectUser.getName());
+        // 20 mins
+        httpSession.setMaxInactiveInterval(20*60);
         Map<String, Object> data = new HashMap<>();
         data.put("id", selectUser.getId());
-        data.put("session", session);
+        data.put("session", httpSession.getId());
         return Result.success(data);
     }
 
