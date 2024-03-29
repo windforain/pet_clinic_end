@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--<beans xmlns="http://www.springframework.org/schema/beans"-->
+<!--       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"-->
+<!--       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">-->
+
+<!--</beans>-->
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pet_clinic_end.mapper.CaseMapper">
+    <insert id="addCase" useGeneratedKeys="true" keyProperty="id" keyColumn="id" parameterType="com.pet_clinic_end.entity.Case">
+        INSERT INTO `case` SET type_id=#{typeId}, case_name=#{caseName},create_time=#{createTime}, create_user=#{createUser}
+    </insert>
+    <select id="getCaseById" resultType="com.pet_clinic_end.entity.Case">
+        SELECT * FROM `case` WHERE id=#{caseId}
+    </select>
+    <insert id="addCaseItem">
+        INSERT INTO `item_case` SET item_id=#{itemId}, case_id=#{caseId},create_time=#{createTime}, create_user=#{createUser}
+    </insert>
+    <insert id="addCaseMedicine">
+        INSERT INTO `medicine_case` SET medicine_id=#{medicineId}, case_id=#{caseId},create_time=#{createTime}, create_user=#{createUser}
+    </insert>
+    <insert id="addCaseDetail">
+        INSERT INTO `case_detail` SET case_id=#{caseId}, data_col=#{dataCol}, data_row=#{dataRow},
+                                      data=#{data}, create_time=#{createTime}, create_user=#{createUser}
+    </insert>
+    <update id="updateCaseDetail">
+        UPDATE `case_detail` SET data=#{data}, update_time=#{updateTime}, update_user=#{updateUser} WHERE case_id=#{caseId} AND data_col=#{dataCol} AND data_row=#{dataRow}
+    </update>
+    <select id="getCaseDetailByCaseId" resultType="com.pet_clinic_end.entity.CaseDetail">
+        SELECT case_name, GROUP_CONCAT(case_detail.`data` SEPARATOR ',') AS detail
+        FROM `case`, case_detail
+        WHERE `case`.id=case_detail.case_id AND case_detail.case_id=#{caseId}
+          AND data_col=#{dataCol} AND data_row=#{dataRow} GROUP BY case_name
+    </select>
+    <select id="getCasePage" resultType="com.pet_clinic_end.entity.Case">
+        SELECT case_name, id FROM `case`
+        <where>
+            <if test="typeId!=null">
+                AND type_id=#{typeId}
+            </if>
+            <if test="caseName!=''">
+                AND case_name LIKE concat('%',#{caseName},'%')
+            </if>
+        </where>
+        ORDER BY create_time DESC LIMIT #{begin}, #{pageSize}
+    </select>
+    <delete id="deleteCaseById">
+        DELETE FROM `case` WHERE id=#{did}
+    </delete>
+    <delete id="deleteCaseItemByCaseId">
+        DELETE FROM item_case WHERE case_id = #{caseId}
+    </delete>
+    <delete id="deleteCaseMedicineByCaseId">
+        DELETE FROM medicine_case WHERE case_id = #{caseId}
+    </delete>
+    <delete id="deleteCaseDetailByCaseId">
+        DELETE FROM case_detail WHERE case_id=#{caseId}
+    </delete>
+</mapper>
