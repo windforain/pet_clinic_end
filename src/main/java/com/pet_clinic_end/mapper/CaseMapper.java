@@ -2,6 +2,8 @@ package com.pet_clinic_end.mapper;
 
 import com.pet_clinic_end.entity.Case;
 import com.pet_clinic_end.entity.CaseDetail;
+import com.pet_clinic_end.entity.Category;
+import com.pet_clinic_end.entity.Type;
 import net.sf.jsqlparser.expression.DateTimeLiteralExpression.DateTime;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -22,4 +24,6 @@ public interface CaseMapper {
     void deleteCaseItemByCaseId(@Param("caseId") Long caseId);
     void deleteCaseMedicineByCaseId(@Param("caseId") Long caseId);
     void deleteCaseDetailByCaseId(@Param("caseId") Long caseId);
+    List<Category> getCategorys();
+    List<Type> getTypesByCategoryId(@Param("categoryId") Integer categoryId);
 }

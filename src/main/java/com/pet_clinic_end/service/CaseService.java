@@ -2,6 +2,8 @@ package com.pet_clinic_end.service;
 
 import com.pet_clinic_end.entity.Case;
 import com.pet_clinic_end.entity.CaseDetail;
+import com.pet_clinic_end.entity.Category;
+import com.pet_clinic_end.entity.Type;
 import com.pet_clinic_end.mapper.CaseMapper;
 import net.sf.jsqlparser.expression.DateTimeLiteralExpression.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,5 +79,11 @@ public class CaseService {
         data.put("detail", detail);
 
         return data;
+    }
+    public List<Category> getCategorys(){
+        return caseMapper.getCategorys();
+    }
+    public List<Type> getTypesByCategoryId(Integer categoryId){
+        return caseMapper.getTypesByCategoryId(categoryId);
     }
 }

@@ -57,4 +57,10 @@
     <delete id="deleteCaseDetailByCaseId">
         DELETE FROM case_detail WHERE case_id=#{caseId}
     </delete>
+    <select id="getCategorys" resultType="com.pet_clinic_end.entity.Category">
+        SELECT id,name FROM category
+    </select>
+    <select id="getTypesByCategoryId" resultType="com.pet_clinic_end.entity.Type">
+        SELECT id,name FROM type WHERE category_id=#{categoryId}
+    </select>
 </mapper>
