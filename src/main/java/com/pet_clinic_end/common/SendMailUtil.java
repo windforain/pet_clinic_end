@@ -38,40 +38,19 @@ public class SendMailUtil  {
         props.put("mail.smtp.com", 465);
         props.put("mail.smtp.ssl.enable", true);
 
-//        Properties props = new Properties();
-
-        // 开启debug调试
         props.setProperty("mail.debug", "true");
-        // 发送服务器需要身份验证
-//        props.setProperty("mail.smtp.auth", "true");
-//        // 设置邮件服务器主机名  qq
-////        props.setProperty("mail.host", "smtp.qq.com");
-//        // 设置企业微信邮件服务器  企业邮箱
-//        props.setProperty("mail.smtp.host", "smtp.exmail.qq.com");
-//        // 设置企业微信邮件服务器端口
-//        props.setProperty("mail.smtp.port", "465");
-//        // 发送邮件协议名称
-//        props.setProperty("mail.transport.protocol", "smtp");
-//        props.put("mail.smtp.starttls.required", "true");
         props.put("mail.smtp.ssl.protocols", "TLSv1.2");
         props.put("mail.user", sender);
         props.put("mail.password", pwd);
         System.out.println(sender);
         System.out.println(pwd);
 
-//        MailSSLSocketFactory sf = new MailSSLSocketFactory();
-//        sf.setTrustAllHosts(true);
         props.put("mail.smtp.ssl.enable", "true");
-//        props.put("mail.smtp.ssl.socketFactory", sf);
-//        Session session = Session.getInstance(props);
-
-
         props.setProperty("mail.transport.protocol", "smtp");       //使用smpt的邮件传输协议
         props.setProperty("mail.smtp.host", "smtp.163.net");        //主机地址
         props.setProperty("mail.smtp.auth", "true");        //授权通过
         props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         Session session = Session.getInstance(props);
-//        Session session = Session.getDefaultInstance(props, null);
 
         try {
             MimeMessage message = new MimeMessage(session);
@@ -83,7 +62,7 @@ public class SendMailUtil  {
             // 这是我们的邮件内容，可根据需求更改
             String str = "<!DOCTYPE html><html><head><meta charset='UTF-8'></head><body><p style='font-size: 20px;font-weight:bold;'>Dear ："+receiver+"</p>"
                     + "<p style='text-indent:2em; font-size: 20px;'>Your verification code this time is "
-                    + "<span style='font-size:30px;font-weight:bold;color:red'>" + code + "</span>,Valid within 60 SECONDS, please use as soon as possible! If not operated by yourself, please ignore!</p>"
+                    + "<span style='font-size:30px;font-weight:bold;color:red'>" + code + "</span>,Valid within 10 minutes, please use as soon as possible! If not operated by yourself, please ignore!</p>"
                     + "<p style='text-align:right; padding-right: 20px;'"
                     + "<a href='http://120.79.29.170' style='font-size: 18px'>aof labs</a></p>"
                     + "<span style='font-size: 18px; float:right; margin-right: 60px;'>" + sdf.format(new Date()) + "</span></body></html>";
