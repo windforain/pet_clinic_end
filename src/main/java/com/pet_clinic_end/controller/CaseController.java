@@ -5,6 +5,7 @@ import com.pet_clinic_end.common.IdList;
 import com.pet_clinic_end.common.Result;
 import com.pet_clinic_end.entity.Case;
 import com.pet_clinic_end.entity.CaseDetail;
+import com.pet_clinic_end.entity.Category;
 import com.pet_clinic_end.service.CaseService;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jsqlparser.expression.DateTimeLiteralExpression.DateTime;
@@ -144,7 +145,7 @@ public class CaseController {
     }
 
     @PostMapping("/detail")
-    public  Result<Object> detail(@RequestBody CaseDetail cd) {
+    public Result<Object> detail(@RequestBody CaseDetail cd) {
 //        {
 //            "case_id": 0
 //            "dataType": 0
@@ -157,6 +158,33 @@ public class CaseController {
         } catch (Exception e) {
             e.printStackTrace();
             return Result.error("获取病例详情失败");
+        }
+        return Result.success(data);
+    }
+
+    @PostMapping("/categorys")
+    public Result<Object> categorys() {
+        Object data = null;
+        try {
+            data = caseService.getCategorys();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.error("获取失败");
+        }
+        return Result.success(data);
+    }
+
+    @PostMapping("/types")
+    public Result<Object> types(@RequestBody Category cg) {
+//        {
+//            "id": 0
+//        }
+        Object data = null;
+        try {
+            data = caseService.getTypesByCategoryId(cg.getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.error("获取失败");
         }
         return Result.success(data);
     }

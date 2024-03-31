@@ -53,16 +53,15 @@ public class UserController {
                 // 生成6位随机码
                 StringBuilder code = sendMailUtil.CreateCode();
                 ValueOperations<String, String> operations = redisTemplate.opsForValue();
-                // 如果redis的验证码还存在则提示
+                // 如果redis的验证码还存在则删除，因为保存验证码10分钟，但前端60秒就可以重新发送
                 if (operations.get(email) != null) {
-                    message = "验证码已发送,请60秒后重试";
-                } else {
-                    operations.set(email, String.valueOf(code));
-                    // 设置验证码过期时间
-                    redisTemplate.expire(email, 60, TimeUnit.SECONDS);
-                    message = sendMailUtil.sendEmail("19821851880@163.com", "BALMJGAIRSSUJBLB", email, String.valueOf(code));
-                    return Result.success(message);
+                    redisTemplate.delete(email);
                 }
+                operations.set(email, String.valueOf(code));
+                // 设置验证码过期时间(10mins)
+                redisTemplate.expire(email, 10*60, TimeUnit.SECONDS);
+                message = sendMailUtil.sendEmail("19821851880@163.com", "BALMJGAIRSSUJBLB", email, String.valueOf(code));
+                return Result.success(message);
             } else {
                 message = "邮箱格式不正确";
             }
@@ -114,32 +113,30 @@ public class UserController {
 //            "email": "string",
 //            "password": "string"
 //        }
-        HttpSession httpSession = request.getSession();
         String email = user.getEmail();
         User selectUser = userService.getUserByEmail(email);
         if (selectUser==null) {
             return Result.error("该邮箱账号不存在");
         }
 
-        if (!httpSession.isNew()) {
-            // 当前sessionId和请求登录的账号不匹配，当前sessionId失效
-            if (httpSession.getAttribute("username")!=selectUser.getName() || httpSession.getAttribute("email")!=email)
-            {
-                httpSession.invalidate();
-            }
-            // 匹配，登录成功
-            return Result.success("用户已经登录");
-        }
-
-        // 首次登录或登录新账号
         String pwd = selectUser.getPassword();
         if (!pwd.equals(user.getPassword())) {
             return Result.error("用户名或密码错误");
         }
-        httpSession.setAttribute("email", email);
-        httpSession.setAttribute("username", selectUser.getName());
-        // 20 mins
-        httpSession.setMaxInactiveInterval(20*60);
+
+        HttpSession httpSession = request.getSession(true);
+        log.info("current sessionid");
+        log.info(httpSession.getId());
+        if (httpSession.isNew()) {
+            httpSession.setAttribute("email", email);
+            httpSession.setMaxInactiveInterval(30*60);
+        } else if (!httpSession.getAttribute("email").equals(email)) {
+            httpSession.invalidate();
+            httpSession = request.getSession(true);
+            httpSession.setAttribute("email", email);
+            httpSession.setMaxInactiveInterval(30*60);
+        }
+
         Map<String, Object> data = new HashMap<>();
         data.put("id", selectUser.getId());
         data.put("session", httpSession.getId());
