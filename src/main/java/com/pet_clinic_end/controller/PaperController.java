@@ -108,6 +108,10 @@ public class PaperController {
      */
     @PostMapping("/addQuestion")
     public Result<String> addQuestion(@RequestBody List<QuestionPaper> questionPaperList) {
+        LambdaQueryWrapper<QuestionPaper> queryWrapper = new LambdaQueryWrapper<>();
+        Long paperId = questionPaperList.get(0).getPaperId();
+        queryWrapper.eq(QuestionPaper::getPaperId, paperId);
+        questionPaperService.remove(queryWrapper);
         questionPaperService.saveBatch(questionPaperList);
         return Result.success("在试卷中添加试题成功");
     }
