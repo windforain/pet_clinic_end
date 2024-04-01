@@ -24,7 +24,7 @@ public class CaseController {
     CaseService caseService;
 
     @PostMapping("/add")
-    public Result<String> add(@RequestBody Case c) {
+    public Result<Object> add(@RequestBody Case c) {
         //    {
         //        "typeId": 0,
         //            "itemId": [
@@ -60,7 +60,9 @@ public class CaseController {
                 return Result.error("添加病例-药品关系失败");
             }
         }
-        return Result.success("添加病例成功");
+        Map<String, Object> data = new HashMap<>();
+        data.put("caseId", c.getId());
+        return Result.success(data);
     }
 
     @PostMapping("/update")
