@@ -48,13 +48,13 @@ public class CaseController {
             return Result.error("添加病例失败");
         }
         Integer cid = c.getId();
-        for (Integer iid : c.getItemId()) {
+        for (Long iid : c.getItemId()) {
             result = caseService.addCaseItem(cid, iid, date, createUser);
             if (result!=1) {
                 return Result.error("添加病例-化验项目关系失败");
             }
         }
-        for (Integer mid : c.getMedicineId()) {
+        for (Long mid : c.getMedicineId()) {
             result = caseService.addCaseMedicine(cid, mid, date, createUser);
             if (result!=1) {
                 return Result.error("添加病例-药品关系失败");

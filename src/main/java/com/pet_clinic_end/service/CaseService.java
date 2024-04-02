@@ -23,10 +23,10 @@ public class CaseService {
     public Case getCaseById(Integer caseId){
         return caseMapper.getCaseById(caseId);
     }
-    public Integer addCaseItem(Integer caseId, Integer itemId, Date createTime, Integer createUser){
+    public Integer addCaseItem(Integer caseId, Long itemId, Date createTime, Integer createUser){
         return caseMapper.addCaseItem(caseId,itemId,createTime,createUser);
     }
-    public Integer addCaseMedicine(Integer caseId, Integer medicineId, Date createTime, Integer createUser){
+    public Integer addCaseMedicine(Integer caseId, Long medicineId, Date createTime, Integer createUser){
         return caseMapper.addCaseMedicine(caseId,medicineId,createTime,createUser);
     }
     public Integer updateCaseDetail(Integer caseId, Integer dataCol, Integer dataRow, String data, Date createTime, String createUser){
