@@ -1,6 +1,8 @@
 server:
   port: 8080
 spring:
+  main:
+    allow-bean-definition-overriding: true
   redis:
     database: 0
     host: localhost
