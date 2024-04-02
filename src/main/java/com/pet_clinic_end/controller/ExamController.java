@@ -35,6 +35,9 @@ public class ExamController {
     @Autowired
     private UserExamService userExamService;
 
+    @Autowired
+    private UserService userService;
+
     /**
      * 添加/修改考试
      * @param exam
@@ -142,7 +145,7 @@ public class ExamController {
      * @return
      */
     @PostMapping ("/commit")
-    Result<String> commit(@RequestBody List<UserExam> userExamList) {
+    public Result<String> commit(@RequestBody List<UserExam> userExamList) {
         examService.commitAnswers(userExamList);
         return Result.success("提交答案成功");
     }
@@ -154,7 +157,7 @@ public class ExamController {
      * @return
      */
     @GetMapping("/getUserAnswers")
-    Result<List<UserExam>> getUserAnswers(Long userId, Long examId) {
+    public Result<List<UserExam>> getUserAnswers(Long userId, Long examId) {
         LambdaQueryWrapper<UserExam> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(UserExam::getUserId, userId);
         queryWrapper.eq(UserExam::getExamId, examId);
@@ -162,4 +165,26 @@ public class ExamController {
         List<UserExam> userExamList = userExamService.list(queryWrapper);
         return Result.success(userExamList);
     }
+
+    /**
+     * 获取考试的考生列表
+     * @param examId
+     * @return
+     */
+    @GetMapping("/getUsersOfExam")
+    public Result<List<User>> getUsersOfExam(Long examId) {
+        LambdaQueryWrapper<ExamAuthority> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(ExamAuthority::getExamId, examId);
+        List<ExamAuthority> examAuthorityList = examAuthorityService.list(queryWrapper);
+        List<User> userList = new ArrayList<>();
+        for (ExamAuthority examAuthority: examAuthorityList) {
+            Long userId = examAuthority.getUserId();
+            User user0 = new User();
+            user0.setId(userId);
+            User user = userService.getUserById(user0);
+            userList.add(user);
+        }
+        return Result.success(userList);
+    }
+
 }
