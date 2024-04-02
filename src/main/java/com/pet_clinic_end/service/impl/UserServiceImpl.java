@@ -28,6 +28,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return userMapper.getUserPage(begin, pageSize, name);
     }
     @Override
+    public Integer getTotalUser(){
+        return userMapper.getTotalUser();
+    }
+    @Override
     public Integer updateUserById(User user){
         return userMapper.updateUserById(user);
     }

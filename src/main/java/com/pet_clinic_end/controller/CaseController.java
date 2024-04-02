@@ -24,7 +24,7 @@ public class CaseController {
     CaseService caseService;
 
     @PostMapping("/add")
-    public Result<String> add(@RequestBody Case c) {
+    public Result<Object> add(@RequestBody Case c) {
         //    {
         //        "typeId": 0,
         //            "itemId": [
@@ -48,19 +48,21 @@ public class CaseController {
             return Result.error("添加病例失败");
         }
         Integer cid = c.getId();
-        for (Integer iid : c.getItemId()) {
+        for (Long iid : c.getItemId()) {
             result = caseService.addCaseItem(cid, iid, date, createUser);
             if (result!=1) {
                 return Result.error("添加病例-化验项目关系失败");
             }
         }
-        for (Integer mid : c.getMedicineId()) {
+        for (Long mid : c.getMedicineId()) {
             result = caseService.addCaseMedicine(cid, mid, date, createUser);
             if (result!=1) {
                 return Result.error("添加病例-药品关系失败");
             }
         }
-        return Result.success("添加病例成功");
+        Map<String, Object> data = new HashMap<>();
+        data.put("caseId", c.getId());
+        return Result.success(data);
     }
 
     @PostMapping("/update")
@@ -118,7 +120,8 @@ public class CaseController {
         }
         Integer begin = page * pageSize;
         List<Case> pageCase = caseService.getCasePage(typeId,caseName,begin,pageSize);
-        Integer total = pageCase.size();
+//        Integer total = pageCase.size();
+        Integer total = caseService.getTotalCase();
         Map<String, Object> data = new HashMap<>();
         data.put("list", pageCase);
         data.put("total", total);

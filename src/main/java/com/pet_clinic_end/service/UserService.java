@@ -14,6 +14,7 @@ public interface UserService extends IService<User> {
     public User getUserByEmail(String email);
     public void addCommonUser(String email, String name, String password);
     public List<User> getUserPage(Integer begin, Integer pageSize, String name);
+    public Integer getTotalUser();
     public Integer updateUserById(User user);
     public User getUserById(User user);
 }

@@ -156,7 +156,8 @@ public class UserController {
         }
         Integer begin = page * pageSize;
         List<User> pageUser = userService.getUserPage(begin, pageSize, username);
-        Integer total = pageUser.size();
+//        Integer total = pageUser.size();
+        Integer total = userService.getTotalUser();
         Map<String, Object> data = new HashMap<>();
         data.put("list", pageUser);
         data.put("total", total);

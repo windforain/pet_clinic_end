@@ -23,10 +23,10 @@ public class CaseService {
     public Case getCaseById(Integer caseId){
         return caseMapper.getCaseById(caseId);
     }
-    public Integer addCaseItem(Integer caseId, Integer itemId, Date createTime, Integer createUser){
+    public Integer addCaseItem(Integer caseId, Long itemId, Date createTime, Integer createUser){
         return caseMapper.addCaseItem(caseId,itemId,createTime,createUser);
     }
-    public Integer addCaseMedicine(Integer caseId, Integer medicineId, Date createTime, Integer createUser){
+    public Integer addCaseMedicine(Integer caseId, Long medicineId, Date createTime, Integer createUser){
         return caseMapper.addCaseMedicine(caseId,medicineId,createTime,createUser);
     }
     public Integer updateCaseDetail(Integer caseId, Integer dataCol, Integer dataRow, String data, Date createTime, String createUser){
@@ -39,6 +39,9 @@ public class CaseService {
     }
     public List<Case> getCasePage(Integer typeId, String caseName, Integer begin, Integer pageSize){
         return caseMapper.getCasePage(typeId,caseName,begin,pageSize);
+    }
+    public Integer getTotalCase(){
+        return caseMapper.getTotalCase();
     }
     public void deleteCaseById(Long did){
         caseMapper.deleteCaseById(did);

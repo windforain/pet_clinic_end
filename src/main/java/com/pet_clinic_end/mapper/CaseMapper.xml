@@ -45,6 +45,9 @@
         </where>
         ORDER BY create_time DESC LIMIT #{begin}, #{pageSize}
     </select>
+    <select id="getTotalCase" resultType="Integer">
+        SELECT COUNT(*) FROM `case`
+    </select>
     <delete id="deleteCaseById">
         DELETE FROM `case` WHERE id=#{did}
     </delete>

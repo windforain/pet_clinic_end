@@ -14,6 +14,7 @@ public interface UserMapper extends BaseMapper<User>{
     User getUserByEmail(@Param("email") String email);
     void addCommonUser(@Param("email") String email, @Param("name") String name, @Param("password") String password);
     List<User> getUserPage(@Param("begin") Integer begin, @Param("pageSize") Integer pageSize, @Param("name") String name);
+    Integer getTotalUser();
     Integer updateUserById(User user);
     User getUserById(User user);
 }

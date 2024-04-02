@@ -32,7 +32,7 @@ public class Case implements Serializable {
     @Setter
     private Integer updateUser;
     @Getter
-    private List<Integer> itemId;
+    private List<Long> itemId;
     @Getter
-    private List<Integer> medicineId;
+    private List<Long> medicineId;
 }
