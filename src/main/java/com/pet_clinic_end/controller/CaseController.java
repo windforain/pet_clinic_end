@@ -120,7 +120,8 @@ public class CaseController {
         }
         Integer begin = page * pageSize;
         List<Case> pageCase = caseService.getCasePage(typeId,caseName,begin,pageSize);
-        Integer total = pageCase.size();
+//        Integer total = pageCase.size();
+        Integer total = caseService.getTotalCase();
         Map<String, Object> data = new HashMap<>();
         data.put("list", pageCase);
         data.put("total", total);

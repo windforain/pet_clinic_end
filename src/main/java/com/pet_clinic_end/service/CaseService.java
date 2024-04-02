@@ -40,6 +40,9 @@ public class CaseService {
     public List<Case> getCasePage(Integer typeId, String caseName, Integer begin, Integer pageSize){
         return caseMapper.getCasePage(typeId,caseName,begin,pageSize);
     }
+    public Integer getTotalCase(){
+        return caseMapper.getTotalCase();
+    }
     public void deleteCaseById(Long did){
         caseMapper.deleteCaseById(did);
         caseMapper.deleteCaseItemByCaseId(did);

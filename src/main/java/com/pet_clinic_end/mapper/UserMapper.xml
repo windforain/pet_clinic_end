@@ -16,6 +16,9 @@
     <select id="getUserPage" resultType="com.pet_clinic_end.entity.User">
         SELECT * FROM user WHERE name LIKE concat('%',#{name},'%') LIMIT #{begin}, #{pageSize}
     </select>
+    <select id="getTotalUser" resultType="Integer">
+        SELECT COUNT(*) FROM `user`
+    </select>
     <update id="updateUserById" parameterType="com.pet_clinic_end.entity.User">
         UPDATE user SET name=#{name}, password=#{password}, email=#{email}, image=#{image}  WHERE id=#{id}
     </update>

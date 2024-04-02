@@ -20,6 +20,7 @@ public interface CaseMapper {
     Integer updateCaseDetail(@Param("caseId") Integer caseId, @Param("dataCol") Integer dataCol, @Param("dataRow") Integer dataRow, @Param("data") String data, @Param("updateTime") Date updateTime, @Param("updateUser") String updateUser);
     CaseDetail getCaseDetailByCaseId(@Param("caseId") Integer caseId, @Param("dataCol") Integer dataCol, @Param("dataRow") Integer dataRow);
     List<Case> getCasePage(@Param("typeId") Integer typeId, @Param("caseName") String caseName, @Param("begin") Integer begin, @Param("pageSize") Integer pageSize);
+    Integer getTotalCase();
     void deleteCaseById(@Param("did") Long did);
     void deleteCaseItemByCaseId(@Param("caseId") Long caseId);
     void deleteCaseMedicineByCaseId(@Param("caseId") Long caseId);
