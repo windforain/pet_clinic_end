@@ -127,10 +127,12 @@ public class UserController {
         HttpSession httpSession = request.getSession(true);
         log.info("current sessionid");
         log.info(httpSession.getId());
-        if (httpSession.isNew()) {
+        Object currentSessionEmail = httpSession.getAttribute("email");
+        if (currentSessionEmail==null) {
             httpSession.setAttribute("email", email);
             httpSession.setMaxInactiveInterval(30*60);
-        } else if (!httpSession.getAttribute("email").equals(email)) {
+        } else if (!currentSessionEmail.equals(email)) {
+            log.info("new account");
             httpSession.invalidate();
             httpSession = request.getSession(true);
             httpSession.setAttribute("email", email);
