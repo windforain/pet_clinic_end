@@ -12,6 +12,8 @@ import com.pet_clinic_end.service.TypeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -34,6 +36,7 @@ public class QuestionController {
      * @return
      */
     @PostMapping("/update")
+    @CacheEvict(value = "questionCache", allEntries = true)
     public Result<String> update(@RequestBody Question question) {
         Long questionId = question.getId();
         if (questionId != null) {
@@ -53,6 +56,7 @@ public class QuestionController {
      * @return
      */
     @GetMapping("/page")
+    @Cacheable(value = "questionCache", key = "#page + '_' + #pageSize + '_' + #typeId + '_' + #title")
     public Result<Page> page(int page, int pageSize, Integer typeId, String title) {
         Page<Question> questionPage = new Page<>(page, pageSize);
         Page<QuestionDto> questionDtoPage = new Page<>();
@@ -84,7 +88,7 @@ public class QuestionController {
      * @return
      */
     @PostMapping("/detail")
-    public Result<Question> detail(@RequestBody Question question) {
+        public Result<Question> detail(@RequestBody Question question) {
         Long questionId = question.getId();
         Question question1 = questionService.getById(questionId);
         return Result.success(question1);
@@ -96,6 +100,7 @@ public class QuestionController {
      * @return
      */
     @DeleteMapping("/delete")
+    @CacheEvict(value = "questionCache", allEntries = true)
     public Result<String> delete(@RequestBody IdList idList) {
         List<Long> ids = idList.getIds();
         questionService.removeByIds(ids);

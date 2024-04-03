@@ -2,11 +2,14 @@ package com.pet_clinic_end.common;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 @Data
-public class Result<T> {
+public class Result<T> implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private Integer code; //编码：1成功，0和其它数字为失败
 

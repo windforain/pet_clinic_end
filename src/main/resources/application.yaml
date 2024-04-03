@@ -6,8 +6,11 @@ spring:
   redis:
     database: 0
     host: 172.17.0.3
-    password:
+    #password:
     port: 6379
+  cache:
+    redis:
+      time-to-live: 1800000
   application:
     name: pet_clinic
   datasource:

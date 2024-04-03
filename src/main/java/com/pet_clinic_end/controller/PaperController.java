@@ -15,6 +15,8 @@ import com.pet_clinic_end.service.QuestionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -40,6 +42,7 @@ public class PaperController {
      * @return
      */
     @PostMapping("/update")
+    @CacheEvict(value = "paperCache", allEntries = true)
     public Result<String> update(@RequestBody Paper paper) {
         Long paperId = paper.getId();
         if (paperId != null) {
@@ -58,6 +61,7 @@ public class PaperController {
      * @return
      */
     @GetMapping("/page")
+    @Cacheable(value = "paperCache", key = "#page + '_' + #pageSize + '_' + #name")
     public Result<Page> page(int page, int pageSize, String name) {
         Page<Paper> paperPage = new Page<>(page, pageSize);
         Page<PaperDto> paperDtoPage = new Page<>();
@@ -95,6 +99,7 @@ public class PaperController {
      * @return
      */
     @DeleteMapping("/delete")
+    @CacheEvict(value = "paperCache", allEntries = true)
     public Result<String> delete(@RequestBody IdList idList) {
         List<Long> ids = idList.getIds();
         paperService.removeByIds(ids);

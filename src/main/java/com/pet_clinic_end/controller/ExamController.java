@@ -10,6 +10,8 @@ import com.pet_clinic_end.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -44,6 +46,7 @@ public class ExamController {
      * @return
      */
     @PostMapping("/update")
+    @CacheEvict(value = "examCache", allEntries = true)
     public Result<String> update(@RequestBody Exam exam) {
         Long examId = exam.getId();
         if (examId != null) {
@@ -62,6 +65,7 @@ public class ExamController {
      * @return
      */
     @GetMapping("/page")
+    @Cacheable(value = "examCache", key = "#page + '_' + #pageSize + '_' + #name")
     public Result<Page> page(int page, int pageSize, String name) {
         Page<Exam> examPage = new Page<>(page, pageSize);
         Page<ExamDto> examDtoPage = new Page<>();
