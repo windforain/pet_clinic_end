@@ -16,6 +16,12 @@ spring:
       url: jdbc:mysql://localhost:3306/pet_clinic
       username: root
       password: "Password@123"
+  servlet:
+    multipart:
+      enabled: true #是否启用http上传处理
+      max-request-size: 100MB #最大请求文件的大小
+      max-file-size: 20MB #设置单个文件最大长度
+      file-size-threshold: 20MB #当文件达到多少时进行磁盘写入
 mybatis-plus:
   configuration:
     #在映射实体或者属性时，将数据库中表名和字段名中的下划线去掉，按照驼峰命名法映射
@@ -26,4 +32,4 @@ mybatis-plus:
       id-type: ASSIGN_ID
   mapper-locations: com/pet_clinic_end/mapper/*.xml
 pet_clinic:
-  path: D:\img\pet
+  path: /root/storage/
