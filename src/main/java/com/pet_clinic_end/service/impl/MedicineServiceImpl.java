@@ -18,6 +18,10 @@ import java.util.List;
 public class MedicineServiceImpl extends ServiceImpl<MedicineMapper, Medicine> implements MedicineService {
     @Override
     public void add(Medicine medicine) {
+        if (medicine.getId() != null)
+        {
+            this.removeById(medicine.getId());
+        }
         this.save(medicine);
     }
 

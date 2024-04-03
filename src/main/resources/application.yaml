@@ -5,7 +5,7 @@ spring:
     allow-bean-definition-overriding: true
   redis:
     database: 0
-    host: localhost
+    host: 172.17.0.3
     password:
     port: 6379
   application:
@@ -13,9 +13,9 @@ spring:
   datasource:
     druid:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://localhost:3306/pet_clinic
+      url:  jdbc:mysql://172.17.0.2:3306/pet_clinic
       username: root
-      password: "Password@123"
+      password: bFkezjYbzTXR83nJ
   servlet:
     multipart:
       enabled: true #是否启用http上传处理

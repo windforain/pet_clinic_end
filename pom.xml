@@ -137,7 +137,7 @@
                 <version>${spring-boot.version}</version>
                 <configuration>
                     <mainClass>com.pet_clinic_end.PetClinicEndApplication</mainClass>
-                    <skip>true</skip>
+<!--                    <skip>true</skip>-->
                 </configuration>
                 <executions>
                     <execution>

@@ -18,6 +18,10 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
 
     @Override
     public void add(Item item) {
+        if (item.getId() != null)
+        {
+            this.removeById(item.getId());
+        }
         this.save(item);
     }
 
