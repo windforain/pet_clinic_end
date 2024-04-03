@@ -41,7 +41,7 @@ public class CommonController {
         catch (IOException e){
             e.printStackTrace();
         }
-        return Result.success(fileName);
+        return Result.success("http://106.14.208.53:8080" + basePath + fileName);
     }
 
     @GetMapping("/download")
