@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.Session;
@@ -97,7 +98,10 @@ public class UserController {
                 // 删除验证码，保证验证码使用一次
                 redisTemplate.delete(email);
                 // 往数据库添加用户（普通）
-                userService.addCommonUser(email, user.getName(), user.getPassword());
+                String pwd = DigestUtils.md5DigestAsHex(user.getPassword().getBytes());
+//                log.info(pwd);
+                userService.addCommonUser(email, user.getName(), pwd);
+//                userService.addCommonUser(email, user.getName(), user.getPassword());
                 return Result.success("注册成功");
             }else {
                 return Result.error("验证码无效，请重新获取");
@@ -119,10 +123,18 @@ public class UserController {
             return Result.error("该邮箱账号不存在");
         }
 
-        String pwd = selectUser.getPassword();
-        if (!pwd.equals(user.getPassword())) {
-            return Result.error("用户名或密码错误");
+        String md5Pwd = selectUser.getPassword();
+        String md5VerPwd = DigestUtils.md5DigestAsHex(user.getPassword().getBytes());
+//        log.info(md5Pwd);
+//        log.info(md5VerPwd);
+        if (!md5Pwd.equals(md5VerPwd)){
+            return Result.error("邮箱或密码错误");
         }
+
+//        String pwd = selectUser.getPassword();
+//        if (!pwd.equals(user.getPassword())) {
+//            return Result.error("用户名或密码错误");
+//        }
 
         HttpSession httpSession = request.getSession(true);
         log.info("current sessionid");
@@ -175,6 +187,9 @@ public class UserController {
 //                "image": "string",
 //                "email": "string"
 //        }
+        String pwd = user.getPassword();
+        String md5Pwd = DigestUtils.md5DigestAsHex(pwd.getBytes());
+        user.setPassword(md5Pwd);
         Integer result = userService.updateUserById(user);
         if (result!=1) {
             return Result.error("更新用户信息失败");
