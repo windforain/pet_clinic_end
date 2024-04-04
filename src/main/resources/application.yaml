@@ -35,4 +35,4 @@ mybatis-plus:
       id-type: ASSIGN_ID
   mapper-locations: com/pet_clinic_end/mapper/*.xml
 pet_clinic:
-  path: /root/storage/
+  path: /home/nginx/html/file/
