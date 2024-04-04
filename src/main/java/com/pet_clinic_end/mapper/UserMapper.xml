@@ -20,7 +20,17 @@
         SELECT COUNT(*) FROM `user`
     </select>
     <update id="updateUserById" parameterType="com.pet_clinic_end.entity.User">
-        UPDATE user SET name=#{name}, password=#{password}, image=#{image}  WHERE id=#{id}
+        UPDATE user SET
+        <if test="name!=null">
+            name=#{name},
+        </if>
+        <if test="password!=null">
+            password=#{password},
+        </if>
+        <if test="image!=null">
+            image=#{image}
+        </if>
+        WHERE id=#{id}
     </update>
     <select id="getUserById" resultType="com.pet_clinic_end.entity.User">
         SELECT id, name, email, role, image FROM user WHERE id=#{id}

@@ -195,14 +195,16 @@ public class UserController {
         User loginUser = userService.getUserByEmail(loginEmail.toString());
         boolean selfUpdate = loginUser.getId().equals(user.getId());
         if (selfUpdate || loginUser.getRole()==0) {
-            String pwd = user.getPassword();
-            String md5Pwd = DigestUtils.md5DigestAsHex(pwd.getBytes());
-            user.setPassword(md5Pwd);
+            Object pwd = user.getPassword();
+            if (pwd != null) {
+                String md5Pwd = DigestUtils.md5DigestAsHex(pwd.toString().getBytes());
+                user.setPassword(md5Pwd);
+            }
             Integer result = userService.updateUserById(user);
             if (result!=1) {
                 return Result.error("更新用户信息失败");
             }
-            if (selfUpdate && user.getPassword()!=null) {
+            if (selfUpdate && pwd!=null) {
                 log.info("更新了密码，当前登录状态失效");
                 session.invalidate();
             }
