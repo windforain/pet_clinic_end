@@ -179,22 +179,36 @@ public class UserController {
     }
 
     @PostMapping("/update")
-    public Result<String> update(@RequestBody User user) {
+    public Result<String> update(@RequestBody User user, HttpServletRequest request) {
 //        {
 //            "id": 0,
 //                "name": "string",
 //                "password": "string",
 //                "image": "string",
-//                "email": "string"
 //        }
-        String pwd = user.getPassword();
-        String md5Pwd = DigestUtils.md5DigestAsHex(pwd.getBytes());
-        user.setPassword(md5Pwd);
-        Integer result = userService.updateUserById(user);
-        if (result!=1) {
-            return Result.error("更新用户信息失败");
+        // 已登陆，管理员或用户本人可以
+        HttpSession session = request.getSession(false);
+        if (session==null) {
+            return Result.error("未登录");
         }
-        return Result.success("更新用户信息成功");
+        Object loginEmail = session.getAttribute("email");
+        User loginUser = userService.getUserByEmail(loginEmail.toString());
+        boolean selfUpdate = loginUser.getId().equals(user.getId());
+        if (selfUpdate || loginUser.getRole()==0) {
+            String pwd = user.getPassword();
+            String md5Pwd = DigestUtils.md5DigestAsHex(pwd.getBytes());
+            user.setPassword(md5Pwd);
+            Integer result = userService.updateUserById(user);
+            if (result!=1) {
+                return Result.error("更新用户信息失败");
+            }
+            if (selfUpdate && user.getPassword()!=null) {
+                log.info("更新了密码，当前登录状态失效");
+                session.invalidate();
+            }
+            return Result.success("更新用户信息成功");
+        }
+        return Result.error("没有权限更新该用户信息");
     }
 
     @PostMapping("/getUserInfo")
