@@ -39,7 +39,6 @@ public class LoginCheckFilter implements Filter {
         };
         String[] adminUrls = new String[]{
                 "/user/page",
-                "/user/update",
                 "/case/add",
                 "/case/update",
                 "/case/delete",
