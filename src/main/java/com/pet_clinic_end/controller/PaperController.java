@@ -112,6 +112,7 @@ public class PaperController {
      * @return
      */
     @PostMapping("/addQuestion")
+    @CacheEvict(value = "paperCache", allEntries = true)
     public Result<String> addQuestion(@RequestBody List<QuestionPaper> questionPaperList) {
         LambdaQueryWrapper<QuestionPaper> queryWrapper = new LambdaQueryWrapper<>();
         Long paperId = questionPaperList.get(0).getPaperId();
