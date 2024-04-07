@@ -86,25 +86,38 @@ public class CaseController {
 
         Case existCase = caseService.getCaseById(caseId);
         if (existCase==null) {
-            return Result.error("当前病例不存在，无法添加病例信息");
+            return Result.error("当前病例不存在，无法更新病例信息");
         }
-        Integer result = caseService.updateCaseDetail(caseId,dataCol,0,cd.getText(),date,createUser);
-        if (result!=1) {
-            return Result.error("添加病例文字信息失败");
+        if (cd.getText()!=null && !cd.getText().isEmpty()) {
+            caseService.deleteCaseDetail(caseId,dataCol,0);
+            Integer result = caseService.updateCaseDetail(caseId,dataCol,0,cd.getText(),date,createUser);
+            if (result!=1) {
+                return Result.error("更新病例文字信息失败");
+            }
         }
+        Integer cnt = 0;
         for (String pic: cd.getPicture()) {
-            result = caseService.updateCaseDetail(caseId,dataCol,1,pic,date,createUser );
+            if (cnt == 0) {
+                caseService.deleteCaseDetail(caseId,dataCol,1);
+                cnt = 1;
+            }
+            Integer result = caseService.updateCaseDetail(caseId,dataCol,1,pic,date,createUser );
             if (result!=1) {
-                return Result.error("添加病例图片信息失败");
+                return Result.error("更新病例图片信息失败");
             }
         }
+        cnt = 0;
         for (String vid: cd.getVideo()) {
-            result = caseService.updateCaseDetail(caseId,dataCol,2,vid,date,createUser);
+            if (cnt == 0){
+                caseService.deleteCaseDetail(caseId,dataCol,2);
+                cnt = 1;
+            }
+            Integer result = caseService.updateCaseDetail(caseId,dataCol,2,vid,date,createUser);
             if (result!=1) {
-                return Result.error("添加病例视频信息失败");
+                return Result.error("更新病例视频信息失败");
             }
         }
-        return Result.success("添加病例信息成功");
+        return Result.success("更新病例信息成功");
     }
 
     @GetMapping("/page")

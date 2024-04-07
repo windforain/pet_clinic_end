@@ -48,6 +48,9 @@
     <select id="getTotalCase" resultType="Integer">
         SELECT COUNT(*) FROM `case`
     </select>
+    <delete id="deleteCaseDetail">
+        DELETE FROM case_detail WHERE case_id=#{caseId} AND data_col=#{dataCol} AND data_row=#{dataRow}
+    </delete>
     <delete id="deleteCaseById">
         DELETE FROM `case` WHERE id=#{did}
     </delete>

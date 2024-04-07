@@ -30,18 +30,16 @@ public class CaseService {
         return caseMapper.addCaseMedicine(caseId,medicineId,createTime,createUser);
     }
     public Integer updateCaseDetail(Integer caseId, Integer dataCol, Integer dataRow, String data, Date createTime, String createUser){
-        CaseDetail cd = caseMapper.getCaseDetailByCaseId(caseId,dataCol,dataRow);
-        if (cd == null) {
-            return caseMapper.addCaseDetail(caseId,dataCol,dataRow,data,createTime,createUser);
-        }
-        // actually updateTime&updateUser
-        return caseMapper.updateCaseDetail(caseId,dataCol,dataRow,data,createTime,createUser);
+        return caseMapper.addCaseDetail(caseId,dataCol,dataRow,data,createTime,createUser);
     }
     public List<Case> getCasePage(Integer typeId, String caseName, Integer begin, Integer pageSize){
         return caseMapper.getCasePage(typeId,caseName,begin,pageSize);
     }
     public Integer getTotalCase(){
         return caseMapper.getTotalCase();
+    }
+    public void deleteCaseDetail(Integer caseId, Integer dataCol, Integer dataRow) {
+        caseMapper.deleteCaseDetail(caseId,dataCol,dataRow);
     }
     public void deleteCaseById(Long did){
         caseMapper.deleteCaseById(did);
