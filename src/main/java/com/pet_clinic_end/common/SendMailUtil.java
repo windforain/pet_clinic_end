@@ -18,7 +18,7 @@ public class SendMailUtil  {
      * @param email
      * @return
      */
-    public  boolean isEmail(String email) {
+    public boolean isEmail(String email) {
         if (email == null || email.length() < 1 || email.length() > 256) {
             return false;
         }

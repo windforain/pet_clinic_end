@@ -3,6 +3,7 @@ package com.pet_clinic_end.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pet_clinic_end.common.ExamAndUserIds;
+import com.pet_clinic_end.common.SendMailUtil;
 import com.pet_clinic_end.entity.*;
 import com.pet_clinic_end.mapper.ExamMapper;
 import com.pet_clinic_end.service.*;
@@ -27,6 +28,12 @@ public class ExamServiceImpl extends ServiceImpl<ExamMapper, Exam> implements Ex
     @Autowired
     private QuestionService questionService;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private ExamService examService;
+
     /**
      * 给考试添加考生
      * @param examAndUserIds
@@ -35,12 +42,18 @@ public class ExamServiceImpl extends ServiceImpl<ExamMapper, Exam> implements Ex
     @Transactional
     public void addUsersToExam(ExamAndUserIds examAndUserIds) {
         Long examId = examAndUserIds.getExamId();
+        Exam exam = examService.getById(examId);
         List<Long> userIds = examAndUserIds.getUserIds();
         for (Long userId: userIds) {
+            User user0 = new User();
+            user0.setId(userId);
+            User user = userService.getUserById(user0);
             ExamAuthority examAuthority = new ExamAuthority();
             examAuthority.setExamId(examId);
             examAuthority.setUserId(userId);
             examAuthorityService.save(examAuthority);
+            SendMailUtil sendMailUtil = new SendMailUtil();
+            sendMailUtil.sendEmail(1, "19821851880@163.com", "BALMJGAIRSSUJBLB", user.getEmail(), null, exam);
         }
     }
 
