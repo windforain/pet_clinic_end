@@ -1,5 +1,6 @@
 package com.pet_clinic_end.common;
 
+import com.pet_clinic_end.entity.Exam;
 import com.sun.mail.util.MailSSLSocketFactory;
 import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
@@ -32,7 +33,9 @@ public class SendMailUtil  {
      * @param code          验证码
      * @return
      */
-    public String sendEmail(String sender, String pwd, String receiver, String code){
+    public String sendEmail(Integer sendType, String sender, String pwd, String receiver, String code, Exam exam){
+        //sendType: 0 code
+        //sendType: 1 exam
         Properties props = new Properties();
 //        props.put("mail.smtp.host", "smtp.suixingpay.com");
         props.put("mail.smtp.com", 465);
@@ -60,12 +63,24 @@ public class SendMailUtil  {
             message.setSentDate(new Date());
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
             // 这是我们的邮件内容，可根据需求更改
-            String str = "<!DOCTYPE html><html><head><meta charset='UTF-8'></head><body><p style='font-size: 20px;font-weight:bold;'>Dear ："+receiver+"</p>"
-                    + "<p style='text-indent:2em; font-size: 20px;'>Your verification code this time is "
-                    + "<span style='font-size:30px;font-weight:bold;color:red'>" + code + "</span>,Valid within 10 minutes, please use as soon as possible! If not operated by yourself, please ignore!</p>"
-                    + "<p style='text-align:right; padding-right: 20px;'"
-                    + "<a href='http://120.79.29.170' style='font-size: 18px'>aof labs</a></p>"
-                    + "<span style='font-size: 18px; float:right; margin-right: 60px;'>" + sdf.format(new Date()) + "</span></body></html>";
+            String str = "";
+            if (sendType==0) {
+                str = "<!DOCTYPE html><html><head><meta charset='UTF-8'></head><body><p style='font-size: 20px;font-weight:bold;'>尊敬的用户 "+receiver+"：</p>"
+                        + "<p style='text-indent:2em; font-size: 20px;'>您本次的验证码是 "
+                        + "<span style='font-size:30px;font-weight:bold;color:red'>" + code + "</span>，十分钟内有效，请尽快注册！如非本人操作，请忽略！</p>"
+                        + "<p style='text-align:right; padding-right: 20px;'"
+                        + "<a href='http://120.79.29.170' style='font-size: 18px'>虚拟宠物医院学习系统</a></p>"
+                        + "<span style='font-size: 18px; float:right; margin-right: 60px;'>" + sdf.format(new Date()) + "</span></body></html>";
+
+            } else {
+                str = "<!DOCTYPE html><html><head><meta charset='UTF-8'></head><body><p style='font-size: 20px;font-weight:bold;'>尊敬的用户：</p>"
+                        + "<p style='text-indent:2em; font-size: 20px;'>您有一场开始于 "
+                        + "<span style='font-size:30px;font-weight:bold;color:red'>" + exam.getStartTime() + "</span> 的考试，请注意时间，按时参加！</p>"
+                        + "<p style='text-align:right; padding-right: 20px;'"
+                        + "<a href='http://120.79.29.170' style='font-size: 18px'>虚拟宠物医院学习系统</a></p>"
+                        + "<span style='font-size: 18px; float:right; margin-right: 60px;'>" + sdf.format(new Date()) + "</span></body></html>";
+
+            }
             Multipart mul=new MimeMultipart();  //新建一个MimeMultipart对象来存放多个BodyPart对象
             BodyPart mdp=new MimeBodyPart();  //新建一个存放信件内容的BodyPart对象
             mdp.setContent(str, "text/html;charset=utf-8");

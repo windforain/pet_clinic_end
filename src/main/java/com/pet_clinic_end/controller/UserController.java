@@ -61,7 +61,7 @@ public class UserController {
                 operations.set(email, String.valueOf(code));
                 // 设置验证码过期时间(10mins)
                 redisTemplate.expire(email, 10*60, TimeUnit.SECONDS);
-                message = sendMailUtil.sendEmail("19821851880@163.com", "BALMJGAIRSSUJBLB", email, String.valueOf(code));
+                message = sendMailUtil.sendEmail(0,"19821851880@163.com", "BALMJGAIRSSUJBLB", email, String.valueOf(code),null);
                 return Result.success(message);
             } else {
                 message = "邮箱格式不正确";
