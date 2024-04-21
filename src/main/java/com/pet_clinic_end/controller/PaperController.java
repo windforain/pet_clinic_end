@@ -6,9 +6,11 @@ import com.pet_clinic_end.common.IdList;
 import com.pet_clinic_end.common.Result;
 import com.pet_clinic_end.dto.PaperDto;
 import com.pet_clinic_end.dto.QuestionDto;
+import com.pet_clinic_end.entity.Exam;
 import com.pet_clinic_end.entity.Paper;
 import com.pet_clinic_end.entity.Question;
 import com.pet_clinic_end.entity.QuestionPaper;
+import com.pet_clinic_end.service.ExamService;
 import com.pet_clinic_end.service.PaperService;
 import com.pet_clinic_end.service.QuestionPaperService;
 import com.pet_clinic_end.service.QuestionService;
@@ -35,6 +37,9 @@ public class PaperController {
 
     @Autowired
     QuestionService questionService;
+
+    @Autowired
+    ExamService examService;
 
     /**
      * 添加/修改试卷
@@ -102,6 +107,14 @@ public class PaperController {
     @CacheEvict(value = "paperCache", allEntries = true)
     public Result<String> delete(@RequestBody IdList idList) {
         List<Long> ids = idList.getIds();
+        for (Long id: ids) {
+            LambdaQueryWrapper<Exam> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(Exam::getPaperId, id);
+            List<Exam> list = examService.list(queryWrapper);
+            if (!list.isEmpty()) {
+                return Result.error("部分试卷无法删除，请确保考试中不使用待删除的试卷");
+            }
+        }
         paperService.removeByIds(ids);
         return Result.success("删除试卷成功");
     }

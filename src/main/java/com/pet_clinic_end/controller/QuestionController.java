@@ -6,7 +6,9 @@ import com.pet_clinic_end.common.IdList;
 import com.pet_clinic_end.common.Result;
 import com.pet_clinic_end.dto.QuestionDto;
 import com.pet_clinic_end.entity.Question;
+import com.pet_clinic_end.entity.QuestionPaper;
 import com.pet_clinic_end.entity.Type;
+import com.pet_clinic_end.service.QuestionPaperService;
 import com.pet_clinic_end.service.QuestionService;
 import com.pet_clinic_end.service.TypeService;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +31,9 @@ public class QuestionController {
 
     @Autowired
     private TypeService typeService;
+
+    @Autowired
+    private QuestionPaperService questionPaperService;
 
     /**
      * 添加/修改试题
@@ -103,6 +108,15 @@ public class QuestionController {
     @CacheEvict(value = "questionCache", allEntries = true)
     public Result<String> delete(@RequestBody IdList idList) {
         List<Long> ids = idList.getIds();
+
+        for (Long id: ids) {
+            LambdaQueryWrapper<QuestionPaper> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+            lambdaQueryWrapper.eq(QuestionPaper::getQuestionId, id);
+            List<QuestionPaper> list = questionPaperService.list(lambdaQueryWrapper);
+            if (!list.isEmpty()) {
+                return Result.error("部分试题无法删除，请确保试卷中不存在待删除的试题");
+            }
+        }
         questionService.removeByIds(ids);
         return Result.success("删除试题成功");
     }
