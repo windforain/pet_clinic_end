@@ -52,6 +52,8 @@ public class CaseService {
         String text = "";
         List<String> picture = new ArrayList<>();
         List<String> video = new ArrayList<>();
+        List<String> itemIdList = new ArrayList<>();
+        List<String> medicineIdList = new ArrayList<>();
         // text: row=0
         CaseDetail textDetail = caseMapper.getCaseDetailByCaseId(caseId,dataCol,0);
         if (textDetail!=null) {
@@ -70,6 +72,14 @@ public class CaseService {
             String videoString = videoDetail.getDetail();
             video = Arrays.asList(videoString.split(","));
         }
+        String itemIds = caseMapper.getRelatedItemByCaseId(caseId);
+        if (itemIds!=null) {
+            itemIdList = Arrays.asList(itemIds.split(","));
+        }
+        String medicineIds = caseMapper.getRelatedMedicineByCaseId(caseId);
+        if (medicineIds!=null) {
+            medicineIdList = Arrays.asList(medicineIds.split(","));
+        }
 
         Map<String, Object> detail = new HashMap<>();
         detail.put("text",text);
@@ -78,6 +88,8 @@ public class CaseService {
         Map<String, Object> data = new HashMap<>();
         data.put("caseName", caseName);
         data.put("detail", detail);
+        data.put("itemIds", itemIdList);
+        data.put("medicineIds", medicineIdList);
 
         return data;
     }

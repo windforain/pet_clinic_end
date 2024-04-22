@@ -19,6 +19,8 @@ public interface CaseMapper {
     Integer addCaseDetail(@Param("caseId") Integer caseId, @Param("dataCol") Integer dataCol, @Param("dataRow") Integer dataRow, @Param("data") String data, @Param("createTime") Date createTime, @Param("createUser") String createUser);
     Integer updateCaseDetail(@Param("caseId") Integer caseId, @Param("dataCol") Integer dataCol, @Param("dataRow") Integer dataRow, @Param("data") String data, @Param("updateTime") Date updateTime, @Param("updateUser") String updateUser);
     CaseDetail getCaseDetailByCaseId(@Param("caseId") Integer caseId, @Param("dataCol") Integer dataCol, @Param("dataRow") Integer dataRow);
+    String getRelatedItemByCaseId(@Param("caseId") Integer caseId);
+    String getRelatedMedicineByCaseId(@Param("caseId") Integer caseId);
     List<Case> getCasePage(@Param("typeId") Integer typeId, @Param("caseName") String caseName, @Param("begin") Integer begin, @Param("pageSize") Integer pageSize);
     Integer getTotalCase();
     void deleteCaseDetail(@Param("caseId") Integer caseId, @Param("dataCol") Integer dataCol, @Param("dataRow") Integer dataRow);

@@ -33,6 +33,14 @@
         WHERE `case`.id=case_detail.case_id AND case_detail.case_id=#{caseId}
           AND data_col=#{dataCol} AND data_row=#{dataRow} GROUP BY case_name
     </select>
+    <select id="getRelatedItemByCaseId" resultType="String">
+        SELECT GROUP_CONCAT(`item_id` SEPARATOR ',') AS item
+        FROM item_case WHERE case_id=#{caseId}
+    </select>
+    <select id="getRelatedMedicineByCaseId" resultType="String">
+        SELECT GROUP_CONCAT(`medicine_id` SEPARATOR ',') AS medicine
+        FROM medicine_case WHERE case_id=#{caseId}
+    </select>
     <select id="getCasePage" resultType="com.pet_clinic_end.entity.Case">
         SELECT case_name, id FROM `case`
         <where>
