@@ -39,7 +39,7 @@ public class CommonController {
     @Autowired
     UserService userService;
     @Autowired
-    CaseService caseDetailService;
+    CaseService caseService;
     @PostMapping("/upload")
     public Result<String> upload(@RequestParam("file") MultipartFile file)
     {
@@ -61,7 +61,7 @@ public class CommonController {
             e.printStackTrace();
         }
         com.pet_clinic_end.entity.File file1 = new com.pet_clinic_end.entity.File();
-        file1.setUrl(fileName);
+        file1.setUrl("http://106.14.208.53/file/" + fileName);
         fileService.save(file1);
 
         return Result.success("http://106.14.208.53/file/" + fileName);
@@ -132,12 +132,14 @@ public class CommonController {
                 return Result.error("图片被用作头像，删除失败");
             }
 
-            LambdaQueryWrapper<CaseDetail> caseLambdaQueryWrapper = new LambdaQueryWrapper<>();
-            caseLambdaQueryWrapper.eq(name != null, CaseDetail::getPicture, FileUrl);
-//            CaseDetail caseDetail = caseDetailService.
+            List<CaseDetail> caseDetailList = caseService.queryCaseDetail(FileUrl);
+            if (caseDetailList.size() != 0)
+            {
+                return Result.error("图片被用作病例数据，删除失败");
+            }
 
-
-            File file = new File(basePath + name);
+            String pureName = name.replace("http://106.14.208.53/file/", "");
+            File file = new File(basePath + pureName);
             if (file.exists())
             {
                 file.delete();
