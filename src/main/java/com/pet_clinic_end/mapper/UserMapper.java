@@ -1,6 +1,5 @@
 package com.pet_clinic_end.mapper;
 
-import com.pet_clinic_end.entity.Item;
 import com.pet_clinic_end.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;

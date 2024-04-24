@@ -1,17 +1,14 @@
 package com.pet_clinic_end.mapper;
 
-import com.pet_clinic_end.entity.Case;
-import com.pet_clinic_end.entity.CaseDetail;
-import com.pet_clinic_end.entity.Category;
-import com.pet_clinic_end.entity.Type;
-import net.sf.jsqlparser.expression.DateTimeLiteralExpression.DateTime;
+import com.pet_clinic_end.entity.*;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import java.util.Date;
 import java.util.List;
 
 @Mapper
-public interface CaseMapper {
+public interface CaseMapper extends BaseMapper<Case>{
     Integer addCase(Case c);
     Case getCaseById(@Param("caseId") Integer caseId);
     Integer addCaseItem(@Param("caseId") Integer caseId, @Param("itemId") Long itemId, @Param("createTime") Date createTime, @Param("createUser") Integer createUser);
