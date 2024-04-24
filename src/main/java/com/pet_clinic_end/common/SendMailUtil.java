@@ -59,7 +59,6 @@ public class SendMailUtil  {
             MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress(sender));      //设置发件人
             message.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(receiver,"用户","utf-8"));     //设置收件人
-            message.setSubject("verification code");        //设置主题
             message.setSentDate(new Date());
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
             // 这是我们的邮件内容，可根据需求更改
@@ -73,9 +72,12 @@ public class SendMailUtil  {
                         + "<span style='font-size: 18px; float:right; margin-right: 60px;'>" + sdf.format(new Date()) + "</span></body></html>";
 
             } else {
+                message.setSubject("考试通知");
                 str = "<!DOCTYPE html><html><head><meta charset='UTF-8'></head><body><p style='font-size: 20px;font-weight:bold;'>尊敬的用户：</p>"
                         + "<p style='text-indent:2em; font-size: 20px;'>您有一场开始于 "
-                        + "<span style='font-size:30px;font-weight:bold;color:red'>" + exam.getStartTime() + "</span> 的考试，请注意时间，按时参加！</p>"
+                        + "<span style='font-size:30px;font-weight:bold;color:red'>" + exam.getStartTime() + "</span> 的考试，"
+                        + "考试名称为" + exam.getName() + "，截止时间为<span style='font-size:30px;font-weight:bold;color:red'>" + exam.getEndTime() + "</span>，"
+                        + "请注意时间，按时参加！</p>"
                         + "<p style='text-align:right; padding-right: 20px;'"
                         + "<a href='http://120.79.29.170' style='font-size: 18px'>虚拟宠物医院学习系统</a></p>"
                         + "<span style='font-size: 18px; float:right; margin-right: 60px;'>" + sdf.format(new Date()) + "</span></body></html>";
