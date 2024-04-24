@@ -11,8 +11,8 @@ import java.util.List;
 public interface CaseMapper extends BaseMapper<Case>{
     Integer addCase(Case c);
     Case getCaseById(@Param("caseId") Integer caseId);
-    Integer addCaseItem(@Param("caseId") Integer caseId, @Param("itemId") Long itemId, @Param("createTime") Date createTime, @Param("createUser") Integer createUser);
-    Integer addCaseMedicine(@Param("caseId") Integer caseId, @Param("medicineId") Long medicineId, @Param("createTime") Date createTime, @Param("createUser") Integer createUser);
+    Integer addCaseItem(@Param("caseId") Long caseId, @Param("itemId") Long itemId, @Param("createTime") Date createTime, @Param("createUser") Integer createUser);
+    Integer addCaseMedicine(@Param("caseId") Long caseId, @Param("medicineId") Long medicineId, @Param("createTime") Date createTime, @Param("createUser") Integer createUser);
     Integer addCaseDetail(@Param("caseId") Integer caseId, @Param("dataCol") Integer dataCol, @Param("dataRow") Integer dataRow, @Param("data") String data, @Param("createTime") Date createTime, @Param("createUser") String createUser);
     Integer updateCaseDetail(@Param("caseId") Integer caseId, @Param("dataCol") Integer dataCol, @Param("dataRow") Integer dataRow, @Param("data") String data, @Param("updateTime") Date updateTime, @Param("updateUser") String updateUser);
     CaseDetail getCaseDetailByCaseId(@Param("caseId") Integer caseId, @Param("dataCol") Integer dataCol, @Param("dataRow") Integer dataRow);
@@ -27,4 +27,5 @@ public interface CaseMapper extends BaseMapper<Case>{
     void deleteCaseDetailByCaseId(@Param("caseId") Long caseId);
     List<Category> getCategorys();
     List<Type> getTypesByCategoryId(@Param("categoryId") Integer categoryId);
+    List<CaseDetail> queryCaseDetail(@Param("query") String query);
 }

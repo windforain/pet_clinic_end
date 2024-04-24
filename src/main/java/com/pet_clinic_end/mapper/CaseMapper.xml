@@ -77,4 +77,7 @@
     <select id="getTypesByCategoryId" resultType="com.pet_clinic_end.entity.Type">
         SELECT id,name FROM type WHERE category_id=#{categoryId}
     </select>
+    <select id="queryCaseDetail" resultType="com.pet_clinic_end.entity.CaseDetail">
+        SELECT * FROM case_detail WHERE data LIKE concat('%',#{query},'%')
+    </select>
 </mapper>

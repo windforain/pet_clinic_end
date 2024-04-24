@@ -14,7 +14,7 @@ public class Case implements Serializable {
     private static final long serialVersionUID = 1L;
     @Getter
     @Setter
-    private Integer id;
+    private Long id;
     @Getter
     private Integer typeId;
     @Getter

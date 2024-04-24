@@ -28,11 +28,11 @@ public class CaseServiceImpl extends ServiceImpl<CaseMapper, Case> implements Ca
         return caseMapper.getCaseById(caseId);
     }
     @Override
-    public Integer addCaseItem(Integer caseId, Long itemId, Date createTime, Integer createUser){
+    public Integer addCaseItem(Long caseId, Long itemId, Date createTime, Integer createUser){
         return caseMapper.addCaseItem(caseId,itemId,createTime,createUser);
     }
     @Override
-    public Integer addCaseMedicine(Integer caseId, Long medicineId, Date createTime, Integer createUser){
+    public Integer addCaseMedicine(Long caseId, Long medicineId, Date createTime, Integer createUser){
         return caseMapper.addCaseMedicine(caseId,medicineId,createTime,createUser);
     }
     @Override
@@ -112,5 +112,9 @@ public class CaseServiceImpl extends ServiceImpl<CaseMapper, Case> implements Ca
     @Override
     public List<Type> getTypesByCategoryId(Integer categoryId){
         return caseMapper.getTypesByCategoryId(categoryId);
+    }
+    @Override
+    public List<CaseDetail> queryCaseDetail(String query) {
+        return caseMapper.queryCaseDetail(query);
     }
 }

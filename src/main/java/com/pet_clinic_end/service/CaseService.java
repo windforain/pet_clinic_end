@@ -13,8 +13,8 @@ import java.util.List;
 public interface CaseService extends IService<Case> {
     public Integer addCase(Case c);
     public Case getCaseById(Integer caseId);
-    public Integer addCaseItem(Integer caseId, Long itemId, Date createTime, Integer createUser);
-    public Integer addCaseMedicine(Integer caseId, Long medicineId, Date createTime, Integer createUser);
+    public Integer addCaseItem(Long caseId, Long itemId, Date createTime, Integer createUser);
+    public Integer addCaseMedicine(Long caseId, Long medicineId, Date createTime, Integer createUser);
     public Integer updateCaseDetail(Integer caseId, Integer dataCol, Integer dataRow, String data, Date createTime, String createUser);
     public List<Case> getCasePage(Integer typeId, String caseName, Integer begin, Integer pageSize);
     public Integer getTotalCase();
@@ -23,6 +23,7 @@ public interface CaseService extends IService<Case> {
     public Object getCaseDetailByCaseId(Integer caseId, Integer dataCol);
     public List<Category> getCategorys();
     public List<Type> getTypesByCategoryId(Integer categoryId);
+    public List<CaseDetail> queryCaseDetail(String query);
 }
 
 

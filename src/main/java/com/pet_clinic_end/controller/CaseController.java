@@ -35,19 +35,18 @@ public class CaseController {
         //    ],
         //        "caseName": "string"
         //    }
-        Integer typeId = c.getTypeId();
-        String caseName = c.getCaseName();
+//        Integer typeId = c.getTypeId();
+//        String caseName = c.getCaseName();
         Date date = new Date();
         c.setCreateTime(date);
         // TODO: Add createUser
         c.setCreateUser(null);
         Integer createUser = null;
-
         Integer result = caseService.addCase(c);
         if (result!=1) {
             return Result.error("添加病例失败");
         }
-        Integer cid = c.getId();
+        Long cid = c.getId();
         for (Long iid : c.getItemId()) {
             result = caseService.addCaseItem(cid, iid, date, createUser);
             if (result!=1) {
