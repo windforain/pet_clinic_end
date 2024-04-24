@@ -5,8 +5,13 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pet_clinic_end.common.Result;
+import com.pet_clinic_end.entity.Case;
+import com.pet_clinic_end.entity.CaseDetail;
 import com.pet_clinic_end.entity.Item;
+import com.pet_clinic_end.entity.User;
+import com.pet_clinic_end.service.CaseService;
 import com.pet_clinic_end.service.FileService;
+import com.pet_clinic_end.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,6 +35,11 @@ public class CommonController {
 
     @Autowired
     FileService fileService;
+
+    @Autowired
+    UserService userService;
+    @Autowired
+    CaseService caseDetailService;
     @PostMapping("/upload")
     public Result<String> upload(@RequestParam("file") MultipartFile file)
     {
@@ -113,7 +123,19 @@ public class CommonController {
                 return Result.error("找不到表中文件，删除失败");
             }
 
-            fileService.remove(lambdaQueryWrapper);
+            LambdaQueryWrapper<User> userLambdaQueryWrapper = new LambdaQueryWrapper<>();
+            userLambdaQueryWrapper.eq(name != null, User::getImage, FileUrl);
+            User user = userService.getOne(userLambdaQueryWrapper);
+
+            if (user != null)
+            {
+                return Result.error("图片被用作头像，删除失败");
+            }
+
+            LambdaQueryWrapper<CaseDetail> caseLambdaQueryWrapper = new LambdaQueryWrapper<>();
+            caseLambdaQueryWrapper.eq(name != null, CaseDetail::getPicture, FileUrl);
+//            CaseDetail caseDetail = caseDetailService.
+
 
             File file = new File(basePath + name);
             if (file.exists())
