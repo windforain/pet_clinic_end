@@ -197,6 +197,11 @@ public class UserController {
         if (selfUpdate || loginUser.getRole()==0) {
             Object pwd = user.getPassword();
             if (pwd != null) {
+                if(loginUser.getRole()==0){
+                    User userA=userService.getUserById(user);
+                    SendMailUtil sendMailUtil = new SendMailUtil();
+                    sendMailUtil.sendEmail(2, "19821851880@163.com", "BALMJGAIRSSUJBLB", userA.getEmail(), pwd.toString(), null);
+                }
                 String md5Pwd = DigestUtils.md5DigestAsHex(pwd.toString().getBytes());
                 user.setPassword(md5Pwd);
             }

@@ -71,7 +71,7 @@ public class SendMailUtil  {
                         + "<a href='http://120.79.29.170' style='font-size: 18px'>虚拟宠物医院学习系统</a></p>"
                         + "<span style='font-size: 18px; float:right; margin-right: 60px;'>" + sdf.format(new Date()) + "</span></body></html>";
 
-            } else {
+            } else if(sendType==1) {
                 message.setSubject("考试通知");
                 str = "<!DOCTYPE html><html><head><meta charset='UTF-8'></head><body><p style='font-size: 20px;font-weight:bold;'>尊敬的用户：</p>"
                         + "<p style='text-indent:2em; font-size: 20px;'>您有一场开始于 "
@@ -82,6 +82,13 @@ public class SendMailUtil  {
                         + "<a href='http://120.79.29.170' style='font-size: 18px'>虚拟宠物医院学习系统</a></p>"
                         + "<span style='font-size: 18px; float:right; margin-right: 60px;'>" + sdf.format(new Date()) + "</span></body></html>";
 
+            } else if(sendType==2) {
+                str = "<!DOCTYPE html><html><head><meta charset='UTF-8'></head><body><p style='font-size: 20px;font-weight:bold;'>尊敬的用户 " + receiver + "：</p>"
+                        + "<p style='text-indent:2em; font-size: 20px;'>您的密码已经被管理员重置，新密码为 "
+                        + "<span style='font-size:30px;font-weight:bold;color:red'>" + code + "</span>，请尽快登录并修改密码！</p>"
+                        + "<p style='text-align:right; padding-right: 20px;'"
+                        + "<a href='http://120.79.29.170' style='font-size: 18px'>虚拟宠物医院学习系统</a></p>"
+                        + "<span style='font-size: 18px; float:right; margin-right: 60px;'>" + sdf.format(new Date()) + "</span></body></html>";
             }
             Multipart mul=new MimeMultipart();  //新建一个MimeMultipart对象来存放多个BodyPart对象
             BodyPart mdp=new MimeBodyPart();  //新建一个存放信件内容的BodyPart对象
