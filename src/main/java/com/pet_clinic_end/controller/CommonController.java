@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -86,7 +87,16 @@ public class CommonController {
         queryWrapper.orderByDesc();
         fileService.page(filePage, queryWrapper);
 
-        return Result.success(filePage);
+        Page<com.pet_clinic_end.entity.File> comFilePage = new Page<>();
+        List<com.pet_clinic_end.entity.File> list = filePage.getRecords();
+        for (com.pet_clinic_end.entity.File now : list)
+        {
+            String ori = now.getUrl();
+            now.setUrl("http://106.14.208.53/file/" + ori);
+        }
+
+        comFilePage.setRecords(list);
+        return Result.success(comFilePage);
     }
 
     @GetMapping("/delete")
