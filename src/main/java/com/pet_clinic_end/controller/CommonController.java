@@ -97,16 +97,17 @@ public class CommonController {
         queryWrapper.orderByDesc();
         fileService.page(filePage, queryWrapper);
 
-        Page<com.pet_clinic_end.entity.File> comFilePage = new Page<>();
-        List<com.pet_clinic_end.entity.File> list = filePage.getRecords();
-        for (com.pet_clinic_end.entity.File now : list)
-        {
-            String ori = now.getUrl();
-            now.setUrl("http://106.14.208.53/file/" + ori);
-        }
-
-        comFilePage.setRecords(list);
-        return Result.success(comFilePage);
+//        Page<com.pet_clinic_end.entity.File> comFilePage = new Page<>();
+//        List<com.pet_clinic_end.entity.File> list = filePage.getRecords();
+//        for (com.pet_clinic_end.entity.File now : list)
+//        {
+//            String ori = now.getUrl();
+//            now.setUrl("http://106.14.208.53/file/" + ori);
+//        }
+//
+//        comFilePage.setRecords(list);
+//        return Result.success(comFilePage);
+          return Result.success(filePage);
     }
 
     @GetMapping("/delete")
@@ -137,6 +138,8 @@ public class CommonController {
             {
                 return Result.error("图片被用作病例数据，删除失败");
             }
+
+            fileService.remove(lambdaQueryWrapper);
 
             String pureName = name.replace("http://106.14.208.53/file/", "");
             File file = new File(basePath + pureName);
