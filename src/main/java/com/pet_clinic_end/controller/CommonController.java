@@ -1,8 +1,14 @@
 package com.pet_clinic_end.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pet_clinic_end.common.Result;
+import com.pet_clinic_end.entity.Item;
+import com.pet_clinic_end.service.FileService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,6 +27,8 @@ public class CommonController {
     @Value("${pet_clinic.path}")
     private String basePath;
 
+    @Autowired
+    FileService fileService;
     @PostMapping("/upload")
     public Result<String> upload(@RequestParam("file") MultipartFile file)
     {
@@ -41,6 +49,10 @@ public class CommonController {
         catch (IOException e){
             e.printStackTrace();
         }
+        com.pet_clinic_end.entity.File file1 = new com.pet_clinic_end.entity.File();
+        file1.setUrl(basePath + fileName);
+        fileService.save(file1);
+
         return Result.success("http://106.14.208.53/file/" + fileName);
     }
 
@@ -65,4 +77,50 @@ public class CommonController {
         }
     }
 
+    @GetMapping("/page")
+    public Result<Page> page(int page, int pageSize)
+    {
+        log.info(page + " " + pageSize);
+        Page<com.pet_clinic_end.entity.File> filePage = new Page<>(page, pageSize);
+        LambdaQueryWrapper<com.pet_clinic_end.entity.File> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.orderByDesc();
+        fileService.page(filePage, queryWrapper);
+
+        return Result.success(filePage);
+    }
+
+    @GetMapping("/delete")
+    public Result<String> delete(String name)
+    {
+        try {
+            String FileUrl = basePath + name;
+            LambdaQueryWrapper<com.pet_clinic_end.entity.File> lambdaQueryWrapper = new LambdaQueryWrapper();
+            lambdaQueryWrapper.eq(name != null, com.pet_clinic_end.entity.File::getUrl, FileUrl);
+            com.pet_clinic_end.entity.File MyFile = fileService.getOne(lambdaQueryWrapper);
+
+            if (MyFile == null)
+            {
+                return Result.error("找不到表中文件，删除失败");
+            }
+
+            fileService.remove(lambdaQueryWrapper);
+
+            File file = new File(basePath + name);
+            if (file.exists())
+            {
+                file.delete();
+                System.out.println("===============删除成功==============");
+                return Result.success("删除成功");
+            }
+            else
+            {
+                System.out.println("===============删除失败==============");
+                return Result.error("找不到实际文件，删除失败");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.error("出现未知错误，删除失败");
+        }
+    }
 }

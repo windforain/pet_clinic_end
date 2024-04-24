@@ -17,8 +17,10 @@ spring:
     druid:
       driver-class-name: com.mysql.cj.jdbc.Driver
       url:  jdbc:mysql://172.17.0.2:3306/pet_clinic
+#      url: jdbc:mysql://localhost:3306/pet_clinic
       username: root
       password: bFkezjYbzTXR83nJ
+#      password: "55039260abcZ"
   servlet:
     multipart:
       enabled: true #是否启用http上传处理
@@ -36,3 +38,4 @@ mybatis-plus:
   mapper-locations: com/pet_clinic_end/mapper/*.xml
 pet_clinic:
   path: /home/nginx/html/file/
+#  path: D:\img\pet\
