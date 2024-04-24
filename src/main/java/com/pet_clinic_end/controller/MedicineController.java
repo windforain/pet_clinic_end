@@ -41,8 +41,16 @@ public class MedicineController {
     public Result<String> delete(@RequestBody IdList idList)
     {
         List<Long> ids = idList.getIds();
-        medicineService.delete(ids);
-        return Result.success("删除药品成功");
+        boolean res =  medicineService.delete(ids);
+        if (res)
+        {
+            return Result.success("删除药品成功");
+        }
+        else
+        {
+            return Result.error("部分药品无法删除，请确保不存在与该药品关联的病例");
+        }
+
     }
 
     @GetMapping("/page")

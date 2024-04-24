@@ -58,8 +58,17 @@ public class ItemController {
     {
 
         List<Long> ids = idList.getIds();
-        itemService.delete(ids);
-        return Result.success("删除化验项目成功");
+
+        boolean res = itemService.delete(ids);
+        if (res)
+        {
+            return Result.success("删除化验项目成功");
+        }
+        else
+        {
+            return Result.error("部分化验项目无法删除，请确保不存在与该化验项目关联的病例");
+        }
+
     }
 
     @GetMapping("/page")

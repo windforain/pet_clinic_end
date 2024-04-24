@@ -13,5 +13,5 @@ public interface ItemService extends IService<Item> {
 
     public Item detail(Item item);
 
-    public void delete(List<Long> ids);
+    public boolean delete(List<Long> ids);
 }

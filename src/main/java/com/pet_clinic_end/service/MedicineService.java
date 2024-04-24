@@ -10,5 +10,5 @@ public interface MedicineService extends IService<Medicine> {
     public void add(Medicine medicine);
 
 
-    public void delete(List<Long> ids);
+    public boolean delete(List<Long> ids);
 }
