@@ -50,7 +50,7 @@ public class CommonController {
             e.printStackTrace();
         }
         com.pet_clinic_end.entity.File file1 = new com.pet_clinic_end.entity.File();
-        file1.setUrl(basePath + fileName);
+        file1.setUrl(fileName);
         fileService.save(file1);
 
         return Result.success("http://106.14.208.53/file/" + fileName);
@@ -93,7 +93,7 @@ public class CommonController {
     public Result<String> delete(String name)
     {
         try {
-            String FileUrl = basePath + name;
+            String FileUrl = name;
             LambdaQueryWrapper<com.pet_clinic_end.entity.File> lambdaQueryWrapper = new LambdaQueryWrapper();
             lambdaQueryWrapper.eq(name != null, com.pet_clinic_end.entity.File::getUrl, FileUrl);
             com.pet_clinic_end.entity.File MyFile = fileService.getOne(lambdaQueryWrapper);
