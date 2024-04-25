@@ -1,6 +1,7 @@
 server:
   port: 8080
 spring:
+
   main:
     allow-bean-definition-overriding: true
   redis:
@@ -13,14 +14,44 @@ spring:
       time-to-live: 1800000
   application:
     name: pet_clinic
-  datasource:
-    druid:
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      url:  jdbc:mysql://172.17.0.2:3306/pet_clinic
-#      url: jdbc:mysql://localhost:3306/pet_clinic
-      username: root
-      password: bFkezjYbzTXR83nJ
-#      password: "55039260abcZ"
+#  datasource:
+#    druid:
+#      driver-class-name: com.mysql.cj.jdbc.Driver
+#      url:  jdbc:mysql://172.17.0.2:3306/pet_clinic
+##      url: jdbc:mysql://localhost:3306/pet_clinic
+#      username: root
+#      password: bFkezjYbzTXR83nJ
+##      password: "55039260abcZ"
+  shardingsphere:
+    datasource:
+      names:
+        master,slave
+      # 主数据源
+      master:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://106.14.208.53:3315/pet_clinic?characterEncoding=utf-8
+        username: cons_manager
+        password: 20240425(cmCM
+      # 从数据源
+      slave:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://106.15.75.216:3315/pet_clinic?characterEncoding=utf-8
+        username: cons_manager
+        password: 20240425(cmCM
+    masterslave:
+      # 读写分离配置
+      load-balance-algorithm-type: round_robin #轮询
+      # 最终的数据源名称
+      name: dataSource
+      # 主库数据源名称
+      master-data-source-name: master
+      # 从库数据源名称列表，多个逗号分隔
+      slave-data-source-names: slave
+    props:
+      sql:
+        show: true #开启SQL显示，默认false
   servlet:
     multipart:
       enabled: true #是否启用http上传处理

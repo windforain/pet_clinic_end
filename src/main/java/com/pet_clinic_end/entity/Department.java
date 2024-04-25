@@ -1,5 +1,7 @@
 package com.pet_clinic_end.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -12,8 +14,12 @@ public class Department implements Serializable {
     private String departmentName;
     private String departmentDoctor;
     private String departmentImage;
+    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
+    @TableField(fill = FieldFill.INSERT)
     private Long createUser;
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Long updateUser;
 }
